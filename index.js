@@ -1,31 +1,24 @@
-function arraySubset(arr, sub) {
-    if (sub.length > arr.length) {
-        return false;
-    }
-
-    const arrCount = {};
-
-    for (let i = 0; i < arr.length; i++) {
-        const item = arr[i];
-        if (arrCount[item]) {
-            arrCount[item]++;
-        } else {
-            arrCount[item] = 1;
+function getTypes(arr){
+    const map = {}
+    for(let i=0; i<arr.length; i++){
+      if(map[typeof arr[i]] && typeof arr[i] !== "object"){
+          map[typeof arr[i]]++;
+      }
+      else if (map[typeof arr[i]] && map[typeof arr[i]] == "object" && !Array.isArray(arr[i])){
+        map[typeof arr[i]]++;
+      }
+      else {
+        if(Array.isArray(arr[i])){
+          map["array"]= 1;
         }
-    }
-
-    for (let i = 0; i < sub.length; i++) {
-        const currentItem = sub[i];
-        if (!arrCount[currentItem]) { //it makes sure there is no items left
-            return false;
+        else{
+          map[typeof arr[i]]=1;
         }
-
-        arrCount[currentItem]--;
-        if (arrCount[currentItem] === 0) {
-            delete arrCount[currentItem];
-        }
+      }
     }
-
-    return true;
-}
-arraySubset([2, 1, 3], [1, 2, 3]);
+    return map;
+  }
+  const data = [1,"asd",undefined, {}, [], 2,3];
+  console.log(getTypes(data));
+  
+  //{ number:3, string: 1, undefined: 1, object: 1, array: 1 }
